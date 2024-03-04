@@ -63,30 +63,39 @@ def next_birthday_plan(birthday_date, days_until_birthday, ahead_days):
     plan_date = birthday_date - timedelta(days=ahead_days)
     prompt = ""
     weekday=day_of_week(plan_date.year, plan_date.month, plan_date.day)
-    if weekday=="Monday":
-        plan_date = plan_date - timedelta(days=2)
-        prompt = "It's a working day, I schedule to the latest Saturday: "+ str(plan_date.year) + '-' + str(plan_date.month) + '-' + str(plan_date.day)
-    elif weekday=="Tuesday":
-        plan_date = plan_date - timedelta(days=3)
-        prompt = "It's a working day, I schedule to the latest Saturday: "+ str(plan_date.year) + '-' + str(plan_date.month) + '-' + str(plan_date.day)
-    elif weekday=="Wednesday":
-        plan_date = plan_date + timedelta(days=3)
-        prompt = "It's a working day, I schedule to the latest Saturday: "+ str(plan_date.year) + '-' + str(plan_date.month) + '-' + str(plan_date.day)
-    elif weekday=="Thursday":
-        plan_date = plan_date + timedelta(days=2)
-        prompt = "It's a working day, I schedule to the latest Saturday: "+ str(plan_date.year) + '-' + str(plan_date.month) + '-' + str(plan_date.day)
-    elif weekday=="Friday":
-        plan_date = plan_date + timedelta(days=1)
-    else:
-        plan_date = plan_date + timedelta(days=0)
-
-    #如果计划日期是五一假期和国庆假期，则改为最近的一个周六
-    if plan_date.month==5 and plan_date.day>=1 and plan_date.day<=3:
-        plan_date = plan_date - timedelta(days=7)
-        prompt = "It's a holiday, I schedule to the latest Saturday: "+ str(plan_date.year) + '-' + str(plan_date.month) + '-' + str(plan_date.day)
-    if plan_date.month==10 and plan_date.day>=1 and plan_date.day<=7:
-        plan_date = plan_date - timedelta(days=7)
-        prompt = "It's a holiday, I schedule to the latest Saturday: "+ str(plan_date.year) + '-' + str(plan_date.month) + '-' + str(plan_date.day)
+    labor_National=False
+    # 如果计划日期是五一假期和国庆假期
+    if plan_date.month == 5 and plan_date.day >= 1 and plan_date.day <= 3:
+        # plan_date = plan_date - timedelta(days=7)
+        # prompt = "It's a holiday, I schedule to the latest Saturday: " + str(plan_date.year) + '-' + str(
+        #     plan_date.month) + '-' + str(plan_date.day)
+        labor_National = True
+    if plan_date.month == 10 and plan_date.day >= 1 and plan_date.day <= 7:
+        # plan_date = plan_date - timedelta(days=7)
+        # prompt = "It's a holiday, I schedule to the latest Saturday: " + str(plan_date.year) + '-' + str(
+        #     plan_date.month) + '-' + str(plan_date.day)
+        labor_National = True
+    if(labor_National==False):
+        if weekday == "Monday":
+            plan_date = plan_date - timedelta(days=2)
+            prompt = "It's a working day, I schedule to the latest Saturday: " + str(plan_date.year) + '-' + str(
+                plan_date.month) + '-' + str(plan_date.day)
+        elif weekday == "Tuesday":
+            plan_date = plan_date - timedelta(days=3)
+            prompt = "It's a working day, I schedule to the latest Saturday: " + str(plan_date.year) + '-' + str(
+                plan_date.month) + '-' + str(plan_date.day)
+        elif weekday == "Wednesday":
+            plan_date = plan_date + timedelta(days=3)
+            prompt = "It's a working day, I schedule to the latest Saturday: " + str(plan_date.year) + '-' + str(
+                plan_date.month) + '-' + str(plan_date.day)
+        elif weekday == "Thursday":
+            plan_date = plan_date + timedelta(days=2)
+            prompt = "It's a working day, I schedule to the latest Saturday: " + str(plan_date.year) + '-' + str(
+                plan_date.month) + '-' + str(plan_date.day)
+        elif weekday == "Friday":
+            plan_date = plan_date + timedelta(days=1)
+        else:
+            plan_date = plan_date + timedelta(days=0)
 
     # # 如果计划日期是工作日，则改为最近的一个周六
     # "Return day of the week, where Monday == 0 ... Sunday == 6."
@@ -104,9 +113,10 @@ def next_birthday_plan(birthday_date, days_until_birthday, ahead_days):
     #     plan_date = plan_date + datetime.timedelta(days=0)
 
     today_date=birthday_date - timedelta(days=days_until_birthday)
-    if(plan_date < today_date):
+    # if(plan_date < today_date):
+    #     plan_date=plan_date+timedelta(days=7)
+    while(plan_date < today_date):
         plan_date=plan_date+timedelta(days=7)
-
     # # 输出结果给用户确认
     # print("下次生日日期：", birthday_date)
     # print("下次生日距离今天的天数：", days_until_birthday)
