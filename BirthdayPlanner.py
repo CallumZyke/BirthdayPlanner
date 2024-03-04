@@ -26,7 +26,8 @@ def day_of_week(year, month, day):
     days = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 
     return days[day_of_week]
-
+    
+#ZYL
 def find_next_birthday(today,birthday=None):
     if birthday is None:
         return "2024-05-08"
@@ -270,7 +271,7 @@ class GUI:
             self.nextbirth = datetime.strptime(str(self.nextnum[0]+1)+'-'+str(self.nextnum[1])+'-'+str(self.nextnum[2]), "%Y-%m-%d")
         self.daytobirthday = (self.nextbirth.date()-self.todaydate.date()).days
         ####
-        self.info.insert(tk.END, "\nThe  next birthday is: " + str(self.daytobirthday) + " days later\nPress any key to continue")
+        # self.info.insert(tk.END, "\nThe  next birthday is: " + str(self.daytobirthday) + " days later\nPress any key to continue")
         # self.window.bind('<Key>', self.setdate)
         try:
             if (self.birthdate.date()-self.todaydate.date()).days>0:
