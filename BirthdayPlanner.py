@@ -161,6 +161,8 @@ class GUI:
         value = self.listbox.get(self.listbox.curselection()[0])
         with open(birthdaytxt_path, 'r') as f:
             for i in f.readlines():
+                if i == '':
+                    continue
                 if value in i.split(' '):
                     self.info.insert(tk.END, '\n'+ i.split(' ')[0] + ' is ' + i.split(' ')[1] + ', the birthday is ' + i.split(' ')[2] )
                     self.birthdate = i.split(' ')[2].split('\n')[0]
@@ -248,7 +250,11 @@ class GUI:
             self.birthnum = self.birthdate.split('-')
         except AttributeError:
             self.info.insert(tk.END, "\nPlease select name")
-        self.nextbirth= find_next_birthday(datetime.strptime(self.todaydate, "%Y-%m-%d"), self.birthdate)
+        try:
+            self.nextbirth= find_next_birthday(datetime.strptime(self.todaydate, "%Y-%m-%d"), self.birthdate)
+        except ValueError:
+            messagebox.showinfo('Warning', 'Please enter the correct date format')
+            self.nextbirth= find_next_birthday(datetime.strptime(self.todaydate, "%Y-%m-%d"), self.birthdate)
         self.info.insert(tk.END, "\nThe next birthday is: " + self.nextbirth + "\n")
         try:
             self.todaynum = [int(i) for i in self.todaynum]
